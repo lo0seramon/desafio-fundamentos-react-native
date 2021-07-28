@@ -59,6 +59,11 @@ const CartProvider: React.FC = ({ children }) => {
       } else {
         setProducts([...products, { ...product, quantity: 1 }]);
       }
+
+      await AsyncStorage.setItem(
+        '@GoMarketplace:productsOnCart',
+        JSON.stringify(products),
+      );
     },
     [products],
   );
