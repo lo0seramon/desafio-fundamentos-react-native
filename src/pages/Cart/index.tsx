@@ -40,6 +40,23 @@ interface Product {
 const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
 
+  const cartTotal = useMemo(() => {
+    const total = products.reduce((acumulator, product) => {
+      const productsSubTotal = product.price * product.quantity;
+
+      return acumulator + productsSubTotal;
+    }, 0);
+    return formatValue(total);
+  }, [products]);
+
+  const totalItensInCart = useMemo(() => {
+    const total = products.reduce((acumulator, product) => {
+      return acumulator + product.quantity;
+    }, 0);
+
+    return total;
+  }, [products]);
+
   function handleIncrement(id: string): void {
     increment(id);
   }
@@ -95,7 +112,11 @@ const Cart: React.FC = () => {
           )}
         />
       </ProductContainer>
-      <FloatingCart />
+      <TotalProductsContainer>
+        <FeatherIcon name="shopping-cart" color="#fff" size={24} />
+        <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
+        <SubtotalValue>{cartTotal}</SubtotalValue>
+      </TotalProductsContainer>
     </Container>
   );
 };
